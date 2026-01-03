@@ -1,0 +1,74 @@
+/*
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css to edit this template
+*/
+/* 
+    Created on : 11 Dec 2025, 17.43.44
+    Author     : autummzebtotanel
+*/
+
+body { font-family: 'Poppins', sans-serif; overflow-x: hidden; }
+
+/* Navbar Style */
+.navbar {
+    background-color: #fff;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    padding: 15px 0;
+}
+.navbar-brand { font-weight: 700; color: #2c3e50; font-size: 24px; }
+.nav-link { color: #555 !important; font-weight: 500; margin-left: 20px; }
+.btn-login-nav {
+    background-color: #3498db; color: white;
+    padding: 8px 25px; border-radius: 50px; font-weight: 600;
+    text-decoration: none; transition: 0.3s;
+}
+.btn-login-nav:hover { background-color: #2980b9; color: white; }
+
+/* Carousel Style */
+.carousel-item { height: 600px; }
+.carousel-item img {
+    height: 100%; object-fit: cover;
+    filter: brightness(60%);
+}
+.carousel-caption { bottom: 200px; }
+.hero-title { font-size: 48px; font-weight: 700; margin-bottom: 20px; }
+.hero-desc { font-size: 18px; margin-bottom: 30px; max-width: 700px; margin-left: auto; margin-right: auto; }
+
+/* Features Section */
+.feature-box {
+    padding: 40px 20px; text-align: center;
+    border-radius: 10px; transition: 0.3s;
+}
+.feature-box:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+.icon-circle {
+    width: 80px; height: 80px;
+    background: #eaf2f8; color: #3498db;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 32px; margin: 0 auto 20px;
+}
+
+/* Manfaat Section */
+.manfaat-icon {
+    font-size: 1.5rem;
+    color: #3498db;
+    margin-right: 15px;
+    min-width: 40px;
+}
+.manfaat-item { display: flex; align-items: start; margin-bottom: 20px; }
+
+/* ABOUT SECTION */
+.about-img {
+    border-radius: 20px;
+    box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+}
+.stat-box {
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    border-left: 5px solid #3498db;
+}
