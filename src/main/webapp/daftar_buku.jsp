@@ -25,14 +25,14 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
     <link href="css/style.css" rel="stylesheet">
 </head>
-<body class="bg-light">
+<body class="bg-light" style="padding-top: 100px;">
 
     <jsp:include page="navbar.jsp" />
 
     <div class="container mt-4">
         
         <%
-            // Menghitung statistik menggunakan DAO yang baru kita update
+            // Menghitung statistik menggunakan DAO
             BukuDAO statsDao = new BukuDAO();
             int totalJudul = statsDao.hitungTotalBuku();
             int totalStok = statsDao.hitungTotalStok();
@@ -75,7 +75,8 @@
                 </div>
             </div>
         </div>
-        <div class="card shadow-sm">
+
+        <div class="card shadow-sm mb-5">
             <div class="card-header bg-white py-3">
                 <h4 class="mb-0 text-primary">📚 Manajemen Buku</h4>
             </div>
@@ -92,11 +93,12 @@
                 <% } %>
 
                 <div class="row mb-3">
-                    <div class="col-md-6 mb-2">
+                    <div class="col-md-7 mb-2">
                         <a href="form_buku.jsp" class="btn btn-primary"><i class="bi bi-plus-lg"></i> Tambah Buku</a>
+                        <a href="manajemen_user.jsp" class="btn btn-dark"><i class="bi bi-people-fill"></i> Manajemen Anggota</a>
                         <a href="daftar_pinjam.jsp" class="btn btn-info text-white"><i class="bi bi-list-check"></i> Data Peminjaman</a>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-5">
                         <form action="daftar_buku.jsp" method="get" class="d-flex gap-2">
                             <input type="text" name="cari" class="form-control" placeholder="Cari Judul..." value="<%= (keyword != null) ? keyword : "" %>">
                             <button type="submit" class="btn btn-dark">Cari</button>
@@ -115,7 +117,7 @@
                                 <th>Pengarang</th>
                                 <th>Penerbit</th>
                                 <th>Stok</th>
-                                <th style="width: 200px;">Aksi</th> 
+                                <th style="width: 150px;">Aksi</th> 
                             </tr>
                         </thead>
                         <tbody>
@@ -144,7 +146,6 @@
                                 </td>
                                 <td class="text-center">
                                     <div class="btn-group">
-                                        <a href="form_pinjam.jsp?id_buku=<%= b.getIdBuku() %>" class="btn btn-sm btn-info text-white" title="Pinjamkan Manual"><i class="bi bi-box-arrow-up"></i></a>
                                         <a href="form_edit.jsp?id=<%= b.getIdBuku() %>" class="btn btn-sm btn-warning" title="Edit"><i class="bi bi-pencil-square"></i></a>
                                         <a href="proses_hapus.jsp?id=<%= b.getIdBuku() %>" class="btn btn-sm btn-danger" onclick="return confirm('Hapus buku ini?')" title="Hapus"><i class="bi bi-trash"></i></a>
                                     </div>

@@ -52,6 +52,7 @@
             justify-content: center;
             font-weight: bold;
             color: #555;
+            text-transform: uppercase;
         }
     </style>
 </head>
@@ -87,7 +88,7 @@
             </div>
 
             <div class="col-md-8">
-                <h1 class="fw-bold mb-3"><%= rs.getString("judul_buku") %></h1>
+                <h1 class="fw-bold mb-3 text-dark"><%= rs.getString("judul_buku") %></h1>
                 <h5 class="text-muted mb-4"><i class="bi bi-pen"></i> <%= rs.getString("pengarang") %></h5>
                 
                 <table class="table table-borderless w-75">
@@ -150,8 +151,8 @@
 
                 <div class="vstack gap-3">
                     <%
-                        // Query Gabungan (JOIN) ambil ulasan + nama anggota
-                        String sqlUlasan = "SELECT u.*, a.nama_lengkap FROM ulasan u JOIN anggota a ON u.id_anggota = a.id_anggota WHERE u.id_buku = ? ORDER BY u.id_ulasan DESC";
+                        // PERBAIKAN: Query JOIN diubah ke tabel users karena tabel anggota sudah tidak digunakan
+                        String sqlUlasan = "SELECT u.*, a.nama_lengkap FROM ulasan u JOIN users a ON u.id_anggota = a.id_user WHERE u.id_buku = ? ORDER BY u.id_ulasan DESC";
                         PreparedStatement psUlasan = con.prepareStatement(sqlUlasan);
                         psUlasan.setInt(1, Integer.parseInt(idBuku));
                         ResultSet rsUlasan = psUlasan.executeQuery();
@@ -162,14 +163,15 @@
                             int rating = rsUlasan.getInt("rating");
                             String bintang = "";
                             for(int i=0; i<rating; i++) bintang += "⭐";
+                            String nama = rsUlasan.getString("nama_lengkap");
                     %>
                         <div class="d-flex gap-3 border-bottom pb-3">
                             <div class="user-avatar">
-                                <%= rsUlasan.getString("nama_lengkap").substring(0, 1) %>
+                                <%= nama.substring(0, 1) %>
                             </div>
                             <div>
                                 <h6 class="fw-bold mb-0">
-                                    <%= rsUlasan.getString("nama_lengkap") %> 
+                                    <%= nama %> 
                                     <small class="text-warning small ms-2"><%= bintang %></small>
                                 </h6>
                                 <small class="text-muted" style="font-size: 12px;"><%= rsUlasan.getDate("tanggal_ulasan") %></small>
@@ -178,7 +180,7 @@
                         </div>
                     <% 
                         } 
-                        if(!adaUlasan) { out.println("<p class='text-muted fst-italic'>Belum ada ulasan. Jadilah yang pertama!</p>"); }
+                        if(!adaUlasan) { out.println("<p class='text-muted fst-italic text-center py-4'>Belum ada ulasan. Jadilah yang pertama!</p>"); }
                     %>
                 </div>
 

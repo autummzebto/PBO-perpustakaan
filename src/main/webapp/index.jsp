@@ -14,10 +14,10 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
     
+    
     <link href="css/style.css" rel="stylesheet">
     
     <style>
-        /* CSS Tambahan Khusus FAQ */
         .accordion-button:not(.collapsed) {
             background-color: #e7f1ff;
             color: #0c63e4;
@@ -26,6 +26,36 @@
         .accordion-button:focus {
             box-shadow: none;
             border-color: rgba(0,0,0,.125);
+        }
+
+        .footer-custom {
+            background-color: #1a1d20;
+            color: #dee2e6;
+            padding-top: 50px;
+        }
+        .footer-title {
+            color: #ffffff;
+            font-weight: 600;
+            margin-bottom: 20px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+        .footer-title::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 40px;
+            height: 3px;
+            background-color: #0d6efd;
+        }
+        .footer-link {
+            color: #adb5bd;
+            text-decoration: none;
+            transition: 0.3s;
+        }
+        .footer-link:hover {
+            color: #0d6efd;
         }
     </style>
 </head>
@@ -44,7 +74,8 @@
                     <li class="nav-item"><a class="nav-link" href="#">Home</a></li>
                     <li class="nav-item"><a class="nav-link" href="#fitur">Fitur</a></li>
                     <li class="nav-item"><a class="nav-link" href="#manfaat">Manfaat</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#about">Tentang Kami</a></li>
+                    <li class="nav-item"><a class="nav-link" href="tentang.jsp">Tentang Kami</a></li>
+                    <li class="nav-item"><a class="nav-link" href="galeri.jsp">Galeri</a></li>
                     
                     <li class="nav-item">
                         <a class="nav-link" href="https://docs.google.com/forms/d/e/1FAIpQLSfNYm6wmOcXNBQu2qZupgnaaVv4ABxbxrnkR8b2dwIM_U34Jg/viewform" target="_blank">Hubungi Kami</a>
@@ -122,8 +153,8 @@
                 <div class="col-md-4">
                     <div class="feature-box bg-white shadow-sm h-100">
                         <div class="icon-circle"><i class="bi bi-phone"></i></div>
-                        <h4>Akses Mobile</h4>
-                        <p class="text-muted">Tampilan responsif nyaman diakses via HP atau laptop.</p>
+                        <h4>Fitur Membaca Lengkap</h4>
+                        <p class="text-muted">Mode membaca yang nyaman, pencarian kata kunci, dan penanda halaman.</p>
                     </div>
                 </div>
                 <div class="col-md-4">
@@ -183,9 +214,9 @@
                     <h3>Tim Pengembang</h3>
                     <ul>
                         <li><strong>Autumm Zebtotanel</strong> (0110224058)</li>
-                        <li><strong>Revani</strong> (0110224)</li>
-                        <li><strong>Rian Akhlul Fadli</strong> (0110224)</li>
-                        <li><strong>Asep Saepudin</strong> (0110224)</li>
+                        <li><strong>Revani</strong> (0110224111)</li>
+                        <li><strong>Rian Akhlul Fadli</strong> (0110224211)</li>
+                        <li><strong>Asep Saepudin</strong> (0110224207)</li>
                     </ul>
 
                     <p><em><strong>Program Studi Teknik Informatika</strong> - 2024</em></p>
@@ -278,12 +309,61 @@
         </div>
     </section>
 
-    <footer class="bg-dark text-white py-4">
-        <div class="container text-center">
-            <div class="mb-3">
-                <i class="bi bi-book-half fs-3 text-primary"></i> <span class="fs-4 fw-bold ms-2">ePerpus</span>
+    <footer class="footer-custom">
+        <div class="container">
+            <div class="row g-4 mb-5">
+                <div class="col-lg-4 col-md-6">
+                    <div class="mb-3">
+                        <i class="bi bi-book-half fs-3 text-primary"></i> <span class="fs-4 fw-bold ms-2 text-white">ePerpus</span>
+                    </div>
+                    <h5 class="footer-title">Jam Operasional Layanan</h5>
+                    <p class="small mb-1"><i class="bi bi-calendar3 me-2"></i>Senin - Jumat: 08.00 - 19.00 WIB</p>
+                    <p class="small mb-1"><i class="bi bi-calendar3 me-2"></i>Sabtu - Minggu: 09.00 - 15.30 WIB</p>
+                    <p class="small text-danger mt-2">Cuti Bersama dan Libur Nasional <strong>Tutup</strong></p>
+                    <div class="mt-4">
+                        <a href="#" class="btn btn-outline-light btn-sm rounded-circle me-2"><i class="bi bi-facebook"></i></a>
+                        <a href="#" class="btn btn-outline-light btn-sm rounded-circle me-2"><i class="bi bi-youtube"></i></a>
+                        <a href="#" class="btn btn-outline-light btn-sm rounded-circle me-2"><i class="bi bi-twitter-x"></i></a>
+                        <a href="#" class="btn btn-outline-light btn-sm rounded-circle"><i class="bi bi-instagram"></i></a>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-6">
+                    <h5 class="footer-title">Layanan Digital</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="#" class="footer-link small">Koleksi Buku Terpadu</a></li>
+                        <li class="mb-2"><a href="#" class="footer-link small">E-Resources STT-NF</a></li>
+                        <li class="mb-2"><a href="https://nurulfikri.ac.id" target="_blank" class="footer-link small">Portal nurulfikri.ac.id</a></li>
+                        <li class="mb-2"><a href="#" class="footer-link small">Statistik Website</a></li>
+                    </ul>
+                    <h5 class="footer-title mt-4">Informasi Aplikasi</h5>
+                    <p class="small mb-1"><strong>Dibuat:</strong> 16 Januari 2025</p>
+                    <p class="small"><strong>Jenis:</strong> Universitas Swasta</p>
+                </div>
+
+                <div class="col-lg-4">
+                    <h5 class="footer-title">Kontak Kami</h5>
+                    <p class="small d-flex">
+                        <i class="bi bi-geo-alt-fill me-3 text-primary"></i>
+                        <span>Jalan Lenteng Agung Raya No.20 RT.5/RW.1, Srengseng Sawah, Kec. Jagakarsa, Jakarta Selatan, 12640</span>
+                    </p>
+                    <p class="small mb-2">
+                        <i class="bi bi-telephone-fill me-3 text-primary"></i> (021) 7863191
+                    </p>
+                    <p class="small mb-2">
+                        <i class="bi bi-envelope-fill me-3 text-primary"></i> info@nurulfikri.ac.id
+                    </p>
+                    <p class="small">
+                        <i class="bi bi-globe me-3 text-primary"></i> DKI Jakarta, Indonesia
+                    </p>
+                </div>
             </div>
-            <p class="text-white-50 small mb-0">&copy; 2025 ePerpus Digital Library. All Rights Reserved.</p>
+            <hr class="bg-secondary">
+            <div class="row py-3">
+                <div class="col-md-12 text-center">
+                    <p class="text-white-50 small mb-0">&copy; 2026 ePerpus Digital Library - Kelompok PBO STT-NF. All Rights Reserved.</p>
+                </div>
+            </div>
         </div>
     </footer>
 

@@ -169,7 +169,6 @@ public class BukuDAO {
         return stok;
     }
 
-    // Mapper Helper (Agar kodingan rapi)
     private Buku mapToBuku(ResultSet rs) throws SQLException {
         Buku b = new Buku();
         b.setIdBuku(rs.getInt("id_buku"));

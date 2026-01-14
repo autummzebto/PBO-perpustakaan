@@ -2,7 +2,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
 <%
-    // 1. CEK KEAMANAN (Sama seperti sebelumnya)
+    // 1. CEK KEAMANAN
     response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
     response.setHeader("Pragma", "no-cache"); 
     response.setDateHeader("Expires", 0);
@@ -22,7 +22,12 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
     
     <style>
-        /* Efek Kartu Melayang saat di-hover */
+        /* FIX: Menambah jarak atas agar tidak tertutup navbar */
+        body { 
+            padding-top: 110px; 
+            background-color: #f8f9fa;
+        }
+
         .book-card {
             transition: all 0.3s ease;
             border: none;
@@ -35,13 +40,11 @@
             transform: translateY(-5px);
             box-shadow: 0 10px 25px rgba(0,0,0,0.15);
         }
-        /* Mengatur Ukuran Gambar Agar Seragam */
         .book-cover {
-            height: 300px; /* Tinggi gambar tetap */
-            object-fit: cover; /* Gambar menyesuaikan tanpa gepeng */
+            height: 300px;
+            object-fit: cover;
             border-bottom: 1px solid #f0f0f0;
         }
-        /* Badge Stok di Pojok Kanan Atas Gambar */
         .stok-badge {
             position: absolute;
             top: 15px;
@@ -50,6 +53,7 @@
             padding: 5px 10px;
             border-radius: 20px;
             box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            z-index: 2;
         }
     </style>
 </head>
@@ -57,12 +61,12 @@
 
     <jsp:include page="navbar.jsp" />
 
-    <div class="container mt-4 mb-5">
+    <div class="container mb-5">
         
         <div class="row align-items-center mb-4">
             <div class="col-md-6">
                 <h2 class="fw-bold text-primary mb-1">📚 Koleksi Buku</h2>
-                <p class="text-muted mb-0">Halo, <strong><%= session.getAttribute("user") %></strong>! Mau baca apa hari ini?</p>
+                <p class="text-muted mb-0">Halo, <strong><%= session.getAttribute("nama") %></strong>! Mau baca apa hari ini?</p>
             </div>
             <div class="col-md-6">
                 <form action="halaman_anggota.jsp" method="get" class="d-flex gap-2 justify-content-md-end mt-3 mt-md-0">
@@ -83,7 +87,6 @@
                 String keyword = request.getParameter("cari");
                 List<Buku> daftarBuku;
                 
-                // Logika Pencarian
                 if (keyword != null && !keyword.trim().isEmpty()) {
                     daftarBuku = dao.cariBuku(keyword);
                 } else {
@@ -92,11 +95,10 @@
 
                 if (daftarBuku != null && !daftarBuku.isEmpty()) {
                     for (Buku b : daftarBuku) {
-                        // Logika Gambar: Jika null, pakai default 'no-image.jpg'
                         String imgName = (b.getGambar() == null || b.getGambar().isEmpty()) ? "no-image.jpg" : b.getGambar();
             %>
             <div class="col">
-                <div class="book-card card h-100">
+                <div class="book-card card h-100 shadow-sm">
                     <% if(b.getStok() > 0) { %>
                         <span class="badge bg-success stok-badge">Stok: <%= b.getStok() %></span>
                     <% } else { %>
@@ -140,6 +142,8 @@
                     <a href="halaman_anggota.jsp" class="btn btn-outline-primary mt-3">Lihat Semua Koleksi</a>
                 </div>
             <% } %>
-        </div> </div> <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+        </div> 
+    </div> 
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

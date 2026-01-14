@@ -16,7 +16,6 @@ public class Koneksi {
             Class.forName("org.postgresql.Driver");
             
             // 2. Setting URL, User, dan Password
-            // Perhatikan: port default postgres adalah 5432
             String url = "jdbc:postgresql://localhost:5432/db_perpustakaan";
             String user = "postgres";
             

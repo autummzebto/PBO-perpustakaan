@@ -6,49 +6,57 @@
 
 <%@page import="java.sql.*, com.mycompany.javaweb.koneksi.Koneksi"%>
 <%
-    // 1. Cek Login
+    // 1. Cek apakah user sudah login
     if (session.getAttribute("status") == null) {
         response.sendRedirect("login.jsp");
         return;
     }
 
-    // 2. Tangkap Data
+    // 2. Tangkap Data dari Formulir Detail Buku
     String idBukuStr = request.getParameter("id_buku");
     String ratingStr = request.getParameter("rating");
     String komentar = request.getParameter("komentar");
     
-    // Ambil ID Anggota dari Session yang sedang login
-    // Pastikan session attribute ini sesuai dengan login.jsp (id_anggota)
-    int idAnggota = 0;
-    if(session.getAttribute("id_anggota") != null) {
-        idAnggota = (int) session.getAttribute("id_anggota");
+    // 3. Ambil ID User dari Session (Penting untuk Foreign Key)
+    // Kita ambil id_user karena tabel ulasan sekarang merujuk ke tabel users
+    int idUserAktif = 0;
+    if(session.getAttribute("id_user") != null) {
+        idUserAktif = (int) session.getAttribute("id_user");
+    } else if(session.getAttribute("id_anggota") != null) {
+        // Backup jika login masih menggunakan nama session lama
+        idUserAktif = (int) session.getAttribute("id_anggota");
     } else {
-        out.println("Error: Session ID Anggota tidak ditemukan.");
+        out.println("<script>alert('Error: Session ID tidak ditemukan. Silakan login ulang.'); window.location='login.jsp';</script>");
         return;
     }
 
-    if (idBukuStr != null && ratingStr != null && komentar != null) {
+    // 4. Proses Simpan ke Database
+    if (idBukuStr != null && ratingStr != null && komentar != null && !komentar.trim().isEmpty()) {
         try {
             Connection con = Koneksi.getConnection();
             
-            // 3. Insert ke Tabel Ulasan
+            // Perintah SQL untuk memasukkan ulasan
+            // id_anggota di sini diisi dengan ID dari tabel users yang aktif
             String sql = "INSERT INTO ulasan (id_buku, id_anggota, rating, isi_komentar, tanggal_ulasan) VALUES (?, ?, ?, ?, CURRENT_DATE)";
             PreparedStatement ps = con.prepareStatement(sql);
             
             ps.setInt(1, Integer.parseInt(idBukuStr));
-            ps.setInt(2, idAnggota);
+            ps.setInt(2, idUserAktif);
             ps.setInt(3, Integer.parseInt(ratingStr));
             ps.setString(4, komentar);
             
             ps.executeUpdate();
             
-            // 4. Kembali ke halaman detail
+            // 5. Tutup koneksi dan kembali ke halaman detail buku
+            con.close();
             response.sendRedirect("detail_buku.jsp?id=" + idBukuStr);
             
         } catch (Exception e) {
-            out.println("Error: " + e.getMessage());
+            // Menampilkan error jika terjadi masalah pada database (seperti Foreign Key error)
+            out.println("Error Database: " + e.getMessage());
         }
     } else {
+        // Jika data tidak lengkap, kembali ke halaman utama anggota
         response.sendRedirect("halaman_anggota.jsp");
     }
 %>
