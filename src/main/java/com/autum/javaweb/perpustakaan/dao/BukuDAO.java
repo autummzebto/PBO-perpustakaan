@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.autum.javaweb.perpustakaan.dao;
 
 import com.mycompany.javaweb.koneksi.Koneksi;
@@ -63,13 +59,14 @@ public class BukuDAO {
         return b;
     }
 
-    // --- 4. TAMBAH BUKU (INSERT) ---
+    // --- 4. TAMBAH BUKU (INSERT) - UPDATED FOR CATEGORY ---
     public void tambahBuku(Buku b) {
         try {
             Connection con = Koneksi.getConnection();
             if(b.getGambar() == null || b.getGambar().isEmpty()) b.setGambar("no-image.jpg");
             
-            String sql = "INSERT INTO buku (judul_buku, pengarang, penerbit, tahun_terbit, stok, gambar) VALUES (?, ?, ?, ?, ?, ?)";
+            // Menambahkan id_kategori ke dalam query
+            String sql = "INSERT INTO buku (judul_buku, pengarang, penerbit, tahun_terbit, stok, gambar, id_kategori) VALUES (?, ?, ?, ?, ?, ?, ?)";
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setString(1, b.getJudulBuku());
             ps.setString(2, b.getPengarang());
@@ -77,16 +74,18 @@ public class BukuDAO {
             ps.setInt(4, b.getTahunTerbit());
             ps.setInt(5, b.getStok());
             ps.setString(6, b.getGambar());
+            ps.setInt(7, b.getIdKategori()); // Input Foreign Key
             ps.executeUpdate();
             con.close();
         } catch (Exception e) { e.printStackTrace(); }
     }
 
-    // --- 5. EDIT BUKU (UPDATE) ---
+    // --- 5. EDIT BUKU (UPDATE) - UPDATED FOR CATEGORY ---
     public void updateBuku(Buku b) {
         try {
             Connection con = Koneksi.getConnection();
-            String sql = "UPDATE buku SET judul_buku=?, pengarang=?, penerbit=?, tahun_terbit=?, stok=?, gambar=? WHERE id_buku=?";
+            // Menambahkan id_kategori ke dalam update
+            String sql = "UPDATE buku SET judul_buku=?, pengarang=?, penerbit=?, tahun_terbit=?, stok=?, gambar=?, id_kategori=? WHERE id_buku=?";
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setString(1, b.getJudulBuku());
             ps.setString(2, b.getPengarang());
@@ -94,7 +93,8 @@ public class BukuDAO {
             ps.setInt(4, b.getTahunTerbit());
             ps.setInt(5, b.getStok());
             ps.setString(6, b.getGambar());
-            ps.setInt(7, b.getIdBuku());
+            ps.setInt(7, b.getIdKategori()); // Update Foreign Key
+            ps.setInt(8, b.getIdBuku());
             ps.executeUpdate();
             con.close();
         } catch (Exception e) { e.printStackTrace(); }
@@ -177,6 +177,8 @@ public class BukuDAO {
         b.setPenerbit(rs.getString("penerbit"));
         b.setTahunTerbit(rs.getInt("tahun_terbit"));
         b.setStok(rs.getInt("stok"));
+        // Membaca id_kategori dari database
+        b.setIdKategori(rs.getInt("id_kategori"));
         
         String img = rs.getString("gambar");
         b.setGambar((img == null || img.isEmpty()) ? "no-image.jpg" : img);

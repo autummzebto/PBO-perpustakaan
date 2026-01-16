@@ -4,6 +4,7 @@
     Author     : autummzebtotanel
 --%>
 
+<%@page import="java.sql.*, com.mycompany.javaweb.koneksi.Koneksi"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
     if (session.getAttribute("status") == null || !session.getAttribute("status").equals("login")) {
@@ -30,6 +31,30 @@
                     <div class="mb-3">
                         <label class="form-label fw-bold">Judul Buku</label>
                         <input type="text" name="judul_buku" class="form-control" required placeholder="Contoh: Belajar Java">
+                    </div>
+
+                    <%-- BAGIAN BARU: Dropdown Kategori --%>
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Kategori Buku</label>
+                        <select name="id_kategori" class="form-control" required>
+                            <option value="">-- Pilih Kategori --</option>
+                            <%
+                                try {
+                                    Connection con = Koneksi.getConnection();
+                                    Statement st = con.createStatement();
+                                    ResultSet rs = st.executeQuery("SELECT * FROM kategori ORDER BY nama_kategori ASC");
+                                    while(rs.next()){
+                                %>
+                                    <option value="<%= rs.getInt("id_kategori") %>">
+                                        <%= rs.getString("nama_kategori") %>
+                                    </option>
+                                <%
+                                    }
+                                } catch (Exception e) {
+                                    out.println("<option value=''>Error: " + e.getMessage() + "</option>");
+                                }
+                            %>
+                        </select>
                     </div>
                     
                     <div class="mb-3">

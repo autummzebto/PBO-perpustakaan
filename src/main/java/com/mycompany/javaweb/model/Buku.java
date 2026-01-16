@@ -17,18 +17,20 @@ public class Buku {
     private int tahunTerbit;
     private int stok; 
     private String gambar;
+    private int idKategori; // Tambahan untuk relasi ke tabel kategori
 
     // Constructor Kosong
     public Buku() {}
 
-    // Constructor Lengkap
-    public Buku(int id, String judul, String pengarang, String penerbit, int tahun, int stok) {
+    // Constructor Lengkap (Diperbarui untuk menyertakan idKategori)
+    public Buku(int id, String judul, String pengarang, String penerbit, int tahun, int stok, int idKategori) {
         this.idBuku = id;
         this.judulBuku = judul;
         this.pengarang = pengarang;
         this.penerbit = penerbit;
         this.tahunTerbit = tahun;
         this.stok = stok;
+        this.idKategori = idKategori; //
     }
 
     // Getter & Setter 
@@ -52,4 +54,8 @@ public class Buku {
     
     public String getGambar() { return gambar; }
     public void setGambar(String gambar) { this.gambar = gambar; }
+
+    // Getter & Setter Tambahan untuk Kategori
+    public int getIdKategori() { return idKategori; }
+    public void setIdKategori(int idKategori) { this.idKategori = idKategori; }
 }

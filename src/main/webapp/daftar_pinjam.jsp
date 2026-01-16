@@ -56,27 +56,23 @@
             </thead>
             <tbody>
                 <%
-                    Connection con = Koneksi.getConnection();
-                    
-                    // --- PERBAIKAN QUERY SQL DISINI ---
-                    // 1. p.id_pinjam (Sesuai database Anda)
-                    // 2. a.nama_lengkap (Sesuai database Anda)
-                    // 3. b.judul_buku (Sesuai database Anda)
-                    String sql = "SELECT p.id_pinjam, p.tanggal_pinjam, p.status, " +
-                                 "a.nama_lengkap AS nama_anggota, " +
-                                 "b.judul_buku AS judul_buku " +
-                                 "FROM peminjaman p " +
-                                 "JOIN anggota a ON p.id_anggota = a.id_anggota " +
-                                 "JOIN buku b ON p.id_buku = b.id_buku " +
-                                 "ORDER BY p.id_pinjam DESC";
-                                 
-                    Statement st = con.createStatement();
-                    ResultSet rs = st.executeQuery(sql);
-                    
-                    while(rs.next()) {
-                        String status = rs.getString("status");
-                        // Pastikan null safe (jika status kosong, anggap dipinjam)
-                        if(status == null) status = "dipinjam";
+                    try {
+                        Connection con = Koneksi.getConnection();
+                        
+                        String sql = "SELECT p.id_pinjam, p.tanggal_pinjam, p.status, " +
+                                     "a.nama_lengkap AS nama_anggota, " +
+                                     "b.judul_buku AS judul_buku " +
+                                     "FROM peminjaman p " +
+                                     "JOIN users a ON p.id_anggota = a.id_user " + 
+                                     "JOIN buku b ON p.id_buku = b.id_buku " +
+                                     "ORDER BY p.id_pinjam DESC";
+                                     
+                        Statement st = con.createStatement();
+                        ResultSet rs = st.executeQuery(sql);
+                        
+                        while(rs.next()) {
+                            String status = rs.getString("status");
+                            if(status == null) status = "dipinjam";
                 %>
                 <tr>
                     <td><%= rs.getString("id_pinjam") %></td>
@@ -102,7 +98,12 @@
                         <% } %>
                     </td>
                 </tr>
-                <% } %>
+                <% 
+                        }
+                    } catch (Exception e) {
+                        out.println("<tr><td colspan='6'>Error: " + e.getMessage() + "</td></tr>");
+                    }
+                %>
             </tbody>
         </table>
     </body>

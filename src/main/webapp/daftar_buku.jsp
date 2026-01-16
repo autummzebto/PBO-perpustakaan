@@ -4,6 +4,7 @@
     Author     : autummzebtotanel
 --%>
 
+<%@page import="java.sql.*, com.mycompany.javaweb.koneksi.Koneksi"%>
 <%@page import="java.util.List, com.autum.javaweb.perpustakaan.dao.BukuDAO, com.mycompany.javaweb.model.Buku"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
@@ -114,6 +115,7 @@
                                 <th>ID</th>
                                 <th>Cover</th>
                                 <th>Judul Buku</th>
+                                <th>Kategori</th> <%-- Kolom Baru --%>
                                 <th>Pengarang</th>
                                 <th>Penerbit</th>
                                 <th>Stok</th>
@@ -122,38 +124,57 @@
                         </thead>
                         <tbody>
                             <%
-                                BukuDAO dao = new BukuDAO();
-                                List<Buku> daftarBuku = (keyword != null) ? dao.cariBuku(keyword) : dao.getAllBuku();
-                                
-                                if (daftarBuku != null && !daftarBuku.isEmpty()) {
-                                    for (Buku b : daftarBuku) {
-                                        String img = (b.getGambar() == null || b.getGambar().isEmpty()) ? "no-image.jpg" : b.getGambar();
+                                try {
+                                    Connection con = Koneksi.getConnection();
+                                    // Query JOIN untuk mengambil nama kategori
+                                    String sql = "SELECT b.*, k.nama_kategori FROM buku b " +
+                                                 "LEFT JOIN kategori k ON b.id_kategori = k.id_kategori ";
+                                    
+                                    if(keyword != null && !keyword.isEmpty()) {
+                                        sql += "WHERE b.judul_buku ILIKE '%" + keyword + "%' ";
+                                    }
+                                    sql += "ORDER BY b.id_buku DESC";
+                                    
+                                    Statement st = con.createStatement();
+                                    ResultSet rs = st.executeQuery(sql);
+                                    
+                                    boolean adaData = false;
+                                    while(rs.next()) {
+                                        adaData = true;
+                                        String img = (rs.getString("gambar") == null || rs.getString("gambar").isEmpty()) ? "no-image.jpg" : rs.getString("gambar");
+                                        String kategori = rs.getString("nama_kategori") != null ? rs.getString("nama_kategori") : "-";
                             %>
                             <tr>
-                                <td class="text-center"><%= b.getIdBuku() %></td>
+                                <td class="text-center"><%= rs.getInt("id_buku") %></td>
                                 <td class="text-center">
                                     <img src="images/buku/<%= img %>" width="50" height="70" style="object-fit: cover; border-radius: 4px; border: 1px solid #ddd;">
                                 </td>
-                                <td><%= b.getJudulBuku() %></td>
-                                <td><%= b.getPengarang() %></td>
-                                <td><%= b.getPenerbit() %></td>
+                                <td><strong><%= rs.getString("judul_buku") %></strong></td>
+                                <td class="text-center"><span class="badge bg-secondary"><%= kategori %></span></td> <%-- Tampilan Kategori --%>
+                                <td><%= rs.getString("pengarang") %></td>
+                                <td><%= rs.getString("penerbit") %></td>
                                 <td class="text-center">
-                                    <% if(b.getStok() > 0) { %>
-                                        <span class="badge bg-success"><%= b.getStok() %></span>
+                                    <% if(rs.getInt("stok") > 0) { %>
+                                        <span class="badge bg-success"><%= rs.getInt("stok") %></span>
                                     <% } else { %>
                                         <span class="badge bg-danger">Habis</span>
                                     <% } %>
                                 </td>
                                 <td class="text-center">
                                     <div class="btn-group">
-                                        <a href="form_edit.jsp?id=<%= b.getIdBuku() %>" class="btn btn-sm btn-warning" title="Edit"><i class="bi bi-pencil-square"></i></a>
-                                        <a href="proses_hapus.jsp?id=<%= b.getIdBuku() %>" class="btn btn-sm btn-danger" onclick="return confirm('Hapus buku ini?')" title="Hapus"><i class="bi bi-trash"></i></a>
+                                        <a href="form_edit.jsp?id=<%= rs.getInt("id_buku") %>" class="btn btn-sm btn-warning" title="Edit"><i class="bi bi-pencil-square"></i></a>
+                                        <a href="proses_hapus.jsp?id=<%= rs.getInt("id_buku") %>" class="btn btn-sm btn-danger" onclick="return confirm('Hapus buku ini?')" title="Hapus"><i class="bi bi-trash"></i></a>
                                     </div>
                                 </td>
                             </tr>
                             <% 
-                                    } 
-                                } else { out.println("<tr><td colspan='7' class='text-center'>Data tidak ditemukan</td></tr>"); }
+                                    }
+                                    if(!adaData) {
+                                        out.println("<tr><td colspan='8' class='text-center'>Data tidak ditemukan</td></tr>");
+                                    }
+                                } catch(Exception e) {
+                                    out.println("<tr><td colspan='8' class='text-center text-danger'>Error: " + e.getMessage() + "</td></tr>");
+                                }
                             %>
                         </tbody>
                     </table>
